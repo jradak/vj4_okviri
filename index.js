@@ -1,5 +1,8 @@
 const express = require('express')
 const app = express()
+
+app.use(express.json())
+
 let poruke = [
     {
     id: 1,
@@ -29,10 +32,21 @@ app.get('/api/poruke/:id', (req, res) =>{
         res.json(poruka)
         } else {
         res.status(404).end()
-        }
-       
+        }       
+   })
+app.delete('/api/poruke/:id', (req, res) => {
+    const id = Number(req.params.id)
+    poruke = poruke.filter(p => p.id !== id)
+    res.status(204).end()
+   })
+
+app.post('/api/poruke', (req, res) => {
+    const poruka = req.body
+    console.log(poruka)
+    res.json(poruka)
    })
    
+
 const PORT = 3001
 app.listen(PORT, () => {
  console.log(`Posluzitelj je pokrenut na portu ${PORT}`);
