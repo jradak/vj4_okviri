@@ -39,13 +39,32 @@ app.delete('/api/poruke/:id', (req, res) => {
     poruke = poruke.filter(p => p.id !== id)
     res.status(204).end()
    })
-
-app.post('/api/poruke', (req, res) => {
-    const poruka = req.body
-    console.log(poruka)
-    res.json(poruka)
-   })
+const generirajId = () => {
+    const maxId = poruke.length > 0
+    ? Math.max(...poruke.map(p => p.id))
+    : 0
+    return maxId + 1
+   }
    
+app.post('/api/poruke', (req, res) => {
+    const podatak = req.body
+    if(!podatak.sadrzaj){
+    return res.status(400).json({
+    error: 'Nedostaje sadržaj'
+    })
+    }
+   
+    const poruka = {
+    sadrzaj: podatak.sadrzaj,
+    vazno: podatak.vazno || false,
+    datum: new Date(),
+    id: generirajId()
+    }
+    poruke = poruke.concat(poruka)
+   
+    res.json(poruka)
+})
+
 
 const PORT = 3001
 app.listen(PORT, () => {
