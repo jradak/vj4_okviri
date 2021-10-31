@@ -3,6 +3,15 @@ const app = express()
 
 app.use(express.json())
 
+const zahtjevInfo = (req, res, next) => {
+    console.log('Metoda:', req.method)
+    console.log('Putanja:', req.path)
+    console.log('Tijelo:', req.body)
+    console.log('---')
+    next()
+   }
+app.use(zahtjevInfo)
+
 let poruke = [
     {
     id: 1,
